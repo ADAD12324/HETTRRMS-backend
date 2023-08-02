@@ -24,16 +24,16 @@ const app = express();
 // Create MySQL connection pool
 const pool = mysql.createPool({
   connectionLimit: 10,
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'backend',
+  host: 'sql304.infinityfree.com',
+  user: 'if0_34737302',
+  password: 'Deathnote_01',
+  database: 'if0_34737302_backend',
 });
 
 // Set up middleware
 app.use(bodyParser.json());
 app.use(cors({
-  origin: ["http://localhost:3000"],
+  origin: ["http://localhost:3000", ""],
   method: ["GET", "POST", "PUT"],
   credentials: true
 }));
