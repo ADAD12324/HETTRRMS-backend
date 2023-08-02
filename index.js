@@ -24,18 +24,16 @@ const app = express();
 // Create MySQL connection pool
 const pool = mysql.createPool({
   connectionLimit: 10,
-  MYSQL_URL:'mysql://root:jnDNKExsPYTzWZTkIJJ2@containers-us-west-145.railway.app:5779/railway',
-  MYSQLPORT:'5779',
-  MYSQLHOST: 'containers-us-west-145.railway.app',
-  MYSQLUSER: 'root',
-  MYSQLPASSWORD: 'jnDNKExsPYTzWZTkIJJ2',
-  MYSQLDATABASE: 'railway',
+  host: 'localhost',
+  user: 'root',
+  password: '',
+  database: 'backend',
 });
 
 // Set up middleware
 app.use(bodyParser.json());
 app.use(cors({
-  origin: ["https://hettrrms.onrender.com"],
+  origin: ["http://localhost:3000"],
   method: ["GET", "POST", "PUT"],
   credentials: true
 }));
