@@ -24,10 +24,12 @@ const app = express();
 // Create MySQL connection pool
 const pool = mysql.createPool({
   connectionLimit: 10,
-  host: 'sql304.infinityfree.com',
-  user: 'if0_34737302',
-  password: 'Deathnote_01',
-  database: 'if0_34737302_backend',
+  MYSQL_URL:'mysql://root:jnDNKExsPYTzWZTkIJJ2@containers-us-west-145.railway.app:5779/railway',
+  MYSQLPORT:'5779',
+  MYSQLHOST: 'containers-us-west-145.railway.app',
+  MYSQLUSER: 'root',
+  MYSQLPASSWORD: 'jnDNKExsPYTzWZTkIJJ2',
+  MYSQLDATABASE: 'railway',
 });
 
 // Set up middleware
