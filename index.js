@@ -22,7 +22,7 @@ const axios = require('axios');
 const app = express();
 
 // Create MySQL connection pool
-const mysqlUrl = new URL('mysql://root:jnDNKExsPYTzWZTkIJJ2@containers-us-west-145.railway.app:5779/railway');
+const mysqlUrl = new URL(process.env.MYSQL_URL);
 const host = mysqlUrl.hostname;
 const port = mysqlUrl.port;
 const user = mysqlUrl.username;
