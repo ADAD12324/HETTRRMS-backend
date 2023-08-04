@@ -22,23 +22,14 @@ const axios = require('axios');
 const app = express();
 
 // Create MySQL connection pool
-const mysqlUrl = new URL(process.env.MYSQL_URL);
-const host = mysqlUrl.hostname;
-const port = mysqlUrl.port;
-const user = mysqlUrl.username;
-const password = mysqlUrl.password;
-const database = mysqlUrl.pathname.slice(1); // Removing the leading slash
-
-// Create MySQL connection pool
 const pool = mysql.createPool({
-  host,
-  port,
-  user,
-  password,
-  database,
-  waitForConnections: true,
   connectionLimit: 10,
-  queueLimit: 0,
+  mysqlurl:'mysql://root:jnDNKExsPYTzWZTkIJJ2@containers-us-west-145.railway.app:5779/railway',
+  host:'containers-us-west-145.railway.app',
+  port:'5779',
+  user:'root',
+  password: 'jnDNKExsPYTzWZTkIJJ2',
+  database: 'railway',
 });
 
 // Set up middleware
