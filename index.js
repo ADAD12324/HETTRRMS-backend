@@ -24,12 +24,7 @@ const app = express();
 // Create MySQL connection pool
 const pool = mysql.createPool({
   connectionLimit: 10,
-  mysqlurl:'mysql://root:jnDNKExsPYTzWZTkIJJ2@containers-us-west-145.railway.app:5779/railway',
-  host:'containers-us-west-145.railway.app',
-  port:'5779',
-  user:'root',
-  password: 'jnDNKExsPYTzWZTkIJJ2',
-  database: 'railway',
+  url: 'mysql://root:jnDNKExsPYTzWZTkIJJ2@containers-us-west-145.railway.app:5779/railway',
 });
 
 // Set up middleware
