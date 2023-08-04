@@ -1,5 +1,5 @@
 const express = require('express');
-const mysql = require('mysql');
+const mysql = require('mysql2/promise');
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const path = require('path');
@@ -22,13 +22,23 @@ const axios = require('axios');
 const app = express();
 
 // Create MySQL connection pool
+const mysqlUrl = new URL('mysql://root:jnDNKExsPYTzWZTkIJJ2@containers-us-west-145.railway.app:5779/railway');
+const host = mysqlUrl.hostname;
+const port = mysqlUrl.port;
+const user = mysqlUrl.username;
+const password = mysqlUrl.password;
+const database = mysqlUrl.pathname.slice(1); // Removing the leading slash
+
+// Create MySQL connection pool
 const pool = mysql.createPool({
+  host,
+  port,
+  user,
+  password,
+  database,
+  waitForConnections: true,
   connectionLimit: 10,
-  host: process.env.MYSQLHOST,
-  port: process.env.MYSQLPORT,
-  user: process.env.MYSQLUSER,
-  password: process.env.MYSQLPASSWORD,
-  database: process.env.MYSQLDATABASE,
+  queueLimit: 0,
 });
 
 // Set up middleware
