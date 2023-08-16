@@ -639,7 +639,7 @@ app.post('/api/packages', upload.fields([{ name: 'image' }]), (req, res) => {
 });
 
 app.get('/api/packages', (req, res) => {
-  const sql = 'SELECT id, name, description, price, CONCAT("../", image) as imageUrl, itinerary FROM packages';
+  const sql = 'SELECT id, name, description, price, CONCAT("https://hettrrms-server.onrender.com/server/", image) as imageUrl, itinerary FROM packages';
   pool.query(sql, (error, results) => {
     if (error) {
       console.log('Error getting packages:', error);
