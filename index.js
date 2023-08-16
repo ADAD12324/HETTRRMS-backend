@@ -34,7 +34,7 @@ const pool = mysql.createPool({
 // Set up middleware
 app.use(bodyParser.json());
 app.use(cors({
-  origin: ["https://locahost:3000","https://hettrrms-server.onrender.com"],
+  origin: ["https://hettrrms-server.onrender.com"],
   method: ["GET", "POST", "PUT"],
   credentials: true
 }));
@@ -632,14 +632,14 @@ app.post('/api/packages', upload.fields([{ name: 'image' }]), (req, res) => {
       res.status(500).json({ error: 'Error inserting package data' });
     } else {
       console.log('Package data inserted successfully');
-      const imageUrl = `https://hettrrms-server.onrender.com/server/uploads/${req.files['image'][0].filename}`;
+      const imageUrl = `../uploads/${req.files['image'][0].filename}`;
       res.json({ message: 'Package data inserted successfully', imageUrl });
     }
   });
 });
 
 app.get('/api/packages', (req, res) => {
-  const sql = 'SELECT id, name, description, price, CONCAT("https://hettrrms-server.onrender.com/server/", image) as imageUrl, itinerary FROM packages';
+  const sql = 'SELECT id, name, description, price, CONCAT("../", image) as imageUrl, itinerary FROM packages';
   pool.query(sql, (error, results) => {
     if (error) {
       console.log('Error getting packages:', error);
