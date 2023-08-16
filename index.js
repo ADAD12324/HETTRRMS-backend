@@ -619,7 +619,7 @@ app.put('/api/users/:id', (req, res) => {
 });
 
 //saving Local packages 
-app.post('https://hettrrms-server.onrender.com/api/packages', upload.fields([{ name: 'image' }]), (req, res) => {
+app.post('/api/packages', upload.fields([{ name: 'image' }]), (req, res) => {
   const { name, description, price, itinerary } = req.body;
 
   // Insert package data into MySQL database
@@ -638,7 +638,7 @@ app.post('https://hettrrms-server.onrender.com/api/packages', upload.fields([{ n
   });
 });
 
-app.get('https://hettrrms-server.onrender.com/api/packages', (req, res) => {
+app.get('/api/packages', (req, res) => {
   const sql = 'SELECT id, name, description, price, CONCAT("../", image) as imageUrl, itinerary FROM packages';
   pool.query(sql, (error, results) => {
     if (error) {
@@ -650,7 +650,7 @@ app.get('https://hettrrms-server.onrender.com/api/packages', (req, res) => {
   });
 });
 //show total Local packages 
-app.get('https://hettrrms-server.onrender.com/packages', (req, res) => {
+app.get('/packages', (req, res) => {
   pool.query('SELECT COUNT(*) as total_packages FROM packages', (err, results) => {
     if (err) {
       console.error(err);
