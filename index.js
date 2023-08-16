@@ -34,7 +34,7 @@ const pool = mysql.createPool({
 // Set up middleware
 app.use(bodyParser.json());
 app.use(cors({
-  origin: ["https://hettrrms.onrender.com"],
+  origin: ["https://locahost:3000"],
   method: ["GET", "POST", "PUT"],
   credentials: true
 }));
@@ -185,7 +185,7 @@ app.post('/api/forgot-password', (req, res) => {
   });
 });
 
-function generateRandomPassword(length = 8) {
+function generateRandomPassword(length = 8) {       
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()';
   let password = '';
 
