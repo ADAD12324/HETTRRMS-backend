@@ -632,7 +632,7 @@ app.post('/api/packages', upload.fields([{ name: 'image' }]), (req, res) => {
       res.status(500).json({ error: 'Error inserting package data' });
     } else {
       console.log('Package data inserted successfully');
-      const imageUrl = `../uploads/${req.files['image'][0].filename}`;
+      const imageUrl = `https://hettrrms-server.onrender.com/uploads/${req.files['image'][0].filename}`;
       res.json({ message: 'Package data inserted successfully', imageUrl });
     }
   });
