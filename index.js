@@ -676,14 +676,14 @@ app.post('/api/national', upload.fields([{ name: 'image' }]), (req, res) => {
       res.status(500).json({ error: 'Error inserting package data' });
     } else {
       console.log('Package data inserted successfully');
-      const imageUrl = `../uploads/${req.files['image'][0].filename}`;
+      const imageUrl = `https://hettrrms-server.onrender.com/uploads/${req.files['image'][0].filename}`;
       res.json({ message: 'National Package data inserted successfully', imageUrl });
     }
   });
 });
 
 app.get('/api/national', (req, res) => {
-  const sql = 'SELECT id, name, description, price, CONCAT("../", image) as imageUrl, itinerary FROM national';
+  const sql = 'SELECT id, name, description, price, CONCAT("https://hettrrms-server.onrender.com/", image) as imageUrl, itinerary FROM national';
   pool.query(sql, (error, results) => {
     if (error) {
       console.log('Error getting national packages:', error);
@@ -721,14 +721,14 @@ app.post('/api/international', upload.fields([{ name: 'image' }]), (req, res) =>
       res.status(500).json({ error: 'Error inserting package data' });
     } else {
       console.log('Package data inserted successfully');
-      const imageUrl = `../uploads/${req.files['image'][0].filename}`;
+      const imageUrl = `https://hettrrms-server.onrender.com/uploads/${req.files['image'][0].filename}`;
       res.json({ message: 'International Package data inserted successfully', imageUrl });
     }
   });
 });
 
 app.get('/api/international', (req, res) => {
-  const sql = 'SELECT id, name, description, price, CONCAT("../", image) as imageUrl, itinerary FROM international';
+  const sql = 'SELECT id, name, description, price, CONCAT("https://hettrrms-server.onrender.com/", image) as imageUrl, itinerary FROM international';
   pool.query(sql, (error, results) => {
     if (error) {
       console.log('Error getting international packages:', error);
