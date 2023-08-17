@@ -538,7 +538,7 @@ app.get('/api/user', (req, res) => {
         birthdate: user.birthdate,
         age: user.age,
         gender: user.gender,
-        userImageUrl: `../uploads/${user.userImage}`,
+        userImageUrl: `https://hettrrms-server.onrender.com/uploads/${user.userImage}`,
       });
     });
   });
@@ -632,14 +632,14 @@ app.post('/api/packages', upload.fields([{ name: 'image' }]), (req, res) => {
       res.status(500).json({ error: 'Error inserting package data' });
     } else {
       console.log('Package data inserted successfully');
-      const imageUrl = `../uploads/${req.files['image'][0].filename}`;
+      const imageUrl = `https://hettrrms-server.onrender.com/uploads/${req.files['image'][0].filename}`;
       res.json({ message: 'Package data inserted successfully', imageUrl });
     }
   });
 });
 
 app.get('/api/packages', (req, res) => {
-  const sql = 'SELECT id, name, description, price, CONCAT("../", image) as imageUrl, itinerary FROM packages';
+  const sql = 'SELECT id, name, description, price, CONCAT("https://hettrrms-server.onrender.com/", image) as imageUrl, itinerary FROM packages';
   pool.query(sql, (error, results) => {
     if (error) {
       console.log('Error getting packages:', error);
