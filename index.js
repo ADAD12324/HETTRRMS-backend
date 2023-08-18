@@ -34,8 +34,8 @@ const pool = mysql.createPool({
 // Set up middleware
 app.use(bodyParser.json());
 app.use(cors({
-  origin: "https://hettrrms.onrender.com",
-  methods: ["GET", "POST", "PUT"],
+  origin: ["https://hettrrms.onrender.com"],
+  method: ["GET", "POST", "PUT"],
   credentials: true
 }));
 
