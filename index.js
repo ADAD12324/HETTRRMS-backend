@@ -501,7 +501,7 @@ app.put('/api/users/:id/password', (req, res) => {
 
 
 
-app.get('/api/user', (req, res) => {
+app.get('https://hettrrms-server.onrender.com/api/user', (req, res) => {
   const userId = req.session.userId;
   const query = 'SELECT * FROM users WHERE id = ?';
 
