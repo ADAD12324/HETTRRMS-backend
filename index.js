@@ -34,8 +34,8 @@ const pool = mysql.createPool({
 // Set up middleware
 app.use(bodyParser.json());
 app.use(cors({
-  origin: ["https://hettrrms.onrender.com"],
-  method: ["GET", "POST", "PUT"],
+  origin: "https://hettrrms.onrender.com",
+  methods: ["GET", "POST", "PUT"],
   credentials: true
 }));
 
@@ -502,6 +502,10 @@ app.put('/api/users/:id/password', (req, res) => {
 
 
 app.get('/api/user', (req, res) => {
+  if (!req.session.userId) {
+    showError('User not authenticated', res);
+    return;
+  }
   const userId = req.session.userId;
   const query = 'SELECT * FROM users WHERE id = ?';
 
