@@ -346,39 +346,52 @@ app.get('/api/generated-files', (req, res) => {
 
 
 // for login
-app.post('/api/login', async (req, res) => {
+app.post('/api/login', (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
   const query = 'SELECT id, username, password, role FROM users WHERE username = ?';
 
-  try {
-    const results = await pool.query(query, [username]);
-    
-    if (results.length === 0) {
-      res.json({ error: 'Invalid username or password' });
+  pool.getConnection((err, connection) => {
+    if (err) {
+      console.error(err);
+      showError('Error connecting to database', res);
       return;
     }
+    connection.query(query, [username], async (err, results) => {
+      if (err) {
+        connection.release();
+        console.error(err);
+        showError('Error retrieving user information', res);
+        return;
+      }
 
-    const user = results[0];
-    const passwordMatches = await bcrypt.compare(password, user.password);
+      if (results.length === 0) {
+        connection.release();
+        res.json({ error: 'Invalid username or password' });
+        return;
+      }
 
-    if (!passwordMatches) {
-      res.json({ error: 'Invalid username or password' });
-      return;
-    }
+      const user = results[0];
+      const passwordMatches = await bcrypt.compare(password, user.password);
 
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
+      if (!passwordMatches) {
+        connection.release();
+        res.json({ error: 'Invalid username or password' });
+        return;
+      }
 
-    req.session.userId = user.id;
-    req.session.username = user.username;
-    req.session.role = user.role;
+      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
 
-    res.json({ token, role: user.role, userId: user.id });
-  } catch (error) {
-    console.error(error);
-    showError('Error retrieving user information', res);
-  }
+      req.session.userId = user.id;
+      req.session.username = user.username;
+      req.session.role = user.role;
+
+      connection.release();
+
+      res.json({ token, role: user.role, userId: user.id });
+    });
+  });
 });
 
 
