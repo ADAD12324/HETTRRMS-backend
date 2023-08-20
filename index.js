@@ -1495,10 +1495,12 @@ app.get('/backup', (req, res) => {
   const backupFilePath = path.join(__dirname, 'backups', backupFileName).replace(/\\/g, '/');
 
   const mysqlConfig = {
-    host: 'localhost',
-    user: 'root', // Replace with your MySQL username
-    password: '', // Replace with your MySQL password
-    database: 'backend',
+    connectionLimit: 100,
+    host: `db4free.net`,
+    port: 3306,
+    user: `backend_server`,
+    password:'password12345',
+    database:'backenddb',
   };
 
   const backupProcess = `mysqldump --user=${mysqlConfig.user} --password=${mysqlConfig.password} --host=${mysqlConfig.host} ${mysqlConfig.database} > "${backupFilePath}"`;
@@ -1520,10 +1522,12 @@ app.post('/restore', restore.single('file'), (req, res) => {
   const { path: filePath } = req.file;
 
   const mysqlConfig = {
-    host: 'localhost',
-    user: 'root', // Replace with your MySQL username
-    password: '', // Replace with your MySQL password
-    database: 'backend',
+    connectionLimit: 100,
+    host: `db4free.net`,
+    port: 3306,
+    user: `backend_server`,
+    password:'password12345',
+    database:'backenddb',
   };
 
   const restoreProcess = `mysql --user=${mysqlConfig.user} --password=${mysqlConfig.password} --host=${mysqlConfig.host} ${mysqlConfig.database} < ${filePath}`;
