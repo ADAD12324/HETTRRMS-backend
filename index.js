@@ -35,8 +35,7 @@ const pool = mysql.createPool({
 app.use(bodyParser.json());
 app.use(cors({
   origin: ["https://hettrrms.onrender.com"],
-  method: ["GET", "POST", "PUT"],
-  credentials: true
+  credentials: true,
 }));
 
 app.use(cookieParser());
