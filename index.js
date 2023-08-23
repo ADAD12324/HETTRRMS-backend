@@ -1387,57 +1387,6 @@ app.get('/requests/count', (req, res) => {
 });
 
 
-// Add a new route for handling package search
-app.get('/api/packages/search', (req, res) => {
-  const { q } = req.query;
-  
-  // Search for packages in the MySQL database based on the provided search term
-  const sql = `SELECT * FROM packages WHERE name LIKE '%${q}%' OR description LIKE '%${q}%'`;
-  
-  pool.query(sql, (error, results) => {
-    if (error) {
-      console.log('Error searching packages:', error);
-      res.status(500).json({ error: 'Error searching packages' });
-    } else {
-      res.json(results);
-    }
-  });
-});
-
-// Add a new route for handling national package search
-app.get('/api/national/search', (req, res) => {
-  const { q } = req.query;
-  
-  // Search for national packages in the MySQL database based on the provided search term
-  const sql = `SELECT * FROM national WHERE name LIKE '%${q}%' OR description LIKE '%${q}%'`;
-  
-  pool.query(sql, (error, results) => {
-    if (error) {
-      console.log('Error searching national packages:', error);
-      res.status(500).json({ error: 'Error searching national packages' });
-    } else {
-      res.json(results);
-    }
-  });
-});
-
-// Add a new route for handling international package search
-app.get('/api/international/search', (req, res) => {
-  const { q } = req.query;
-  
-  // Search for international packages in the MySQL database based on the provided search term
-  const sql = `SELECT * FROM international WHERE name LIKE '%${q}%' OR description LIKE '%${q}%'`;
-  
-  pool.query(sql, (error, results) => {
-    if (error) {
-      console.log('Error searching international packages:', error);
-      res.status(500).json({ error: 'Error searching international packages' });
-    } else {
-      res.json(results);
-    }
-  });
-});
-
 
 //businesspartner
 app.post('/api/uploadRecord', record.single('file'), (req, res) => {
@@ -1547,7 +1496,7 @@ app.post('/restore', restore.single('file'), (req, res) => {
 // Schedule automatic backups on the 28th day of the month
 const backupJob = new cron.CronJob('0 0 0 28 * *', () => {
   const backupFileName = `backup_${new Date().toISOString()}.sql`;
-  const backupFilePath = `./backups/${backupFileName}`;
+  const backupFilePath = `https://hettrrms-server.onrender.com/backups/${backupFileName}`;
 
   const backupProcess = `mysqldump --user=${pool.user} --password=${pool.password} --host=${pool.host} ${pool.database} > ${backupFilePath}`;
 
