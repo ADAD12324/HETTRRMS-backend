@@ -395,43 +395,31 @@ app.post('/api/login', (req, res) => {
 
 app.get('/api/user', (req, res) => {
   const userId = req.session.userId;
-  const query = 'SELECT * FROM users WHERE id = ?';
 
-  pool.getConnection((err, connection) => {
+  if (!userId) {
+    res.status(401).json({ error: 'User not authenticated' });
+    return;
+  }
+
+  const query = 'SELECT * FROM users WHERE id = ?';
+  pool.query(query, [userId], (err, result) => {
     if (err) {
       console.error(err);
-      showError('Error connecting to database', res);
+      res.status(500).json({ error: 'Internal server error' });
       return;
     }
 
-    connection.query(query, [userId], (err, results) => {
-      connection.release();
+    if (result.length === 0) {
+      res.status(404).json({ error: 'User not found' });
+      return;
+    }
 
-      if (err) {
-        console.error(err);
-        showError('Error retrieving user information', res);
-        return;
-      }
-
-      if (results.length === 0) {
-        showError('User not found', res);
-        return;
-      }
-
-      const user = results[0];
-
-      res.json({
-        ...user,
-        id: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        phoneNumber: user.phoneNumber,
-        birthdate: user.birthdate,
-        age: user.age,
-        gender: user.gender,
-        userImageUrl: `https://hettrrms-server.onrender.com/uploads/${user.userImage}`, 
-      });
+    const user = result[0];
+    res.json({
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      // ... other user properties
     });
   });
 });
