@@ -394,7 +394,7 @@ app.post('/api/login', (req, res) => {
 });
 
 // Add a new API endpoint to retrieve user information
-app.get('/api/user', (req, res) => {
+app.get('/api/users', (req, res) => {
   const userId = req.session.userId;
 
   const query = 'SELECT id, firstName, lastName, email, phoneNumber, birthdate, age, gender, userImage FROM users WHERE id = ?';
