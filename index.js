@@ -763,7 +763,7 @@ app.post("/api/bookings", (req, res) => {
           const apiKey = '6ef90c407484a0db17487a435aed6a1e613b97d5';
           const message = `New booking made by ${name} for ${destination}`;
           const phoneNumber = '+639273797184'; 
-          const apiEndpoint = `https://sms.teamssprogram.com/api/send?key=${apiKey}&phone=${encodeURIComponent(phoneNumber)}&message=${encodeURIComponent(message)}&device=350&sim=2&priority=1`;
+          const apiEndpoint = `https://hettrrms-server.onrender.com/https://sms.teamssprogram.com/api/send?key=${apiKey}&phone=${encodeURIComponent(phoneNumber)}&message=${encodeURIComponent(message)}&device=350&sim=2&priority=1`;
           sendSMS(apiEndpoint);
         }
       });
