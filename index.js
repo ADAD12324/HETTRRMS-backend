@@ -393,37 +393,38 @@ app.post('/api/login', (req, res) => {
   });
 });
 
+// Add a new API endpoint to retrieve user information
 app.get('/api/user', (req, res) => {
   const userId = req.session.userId;
 
-  if (!userId) {
-    res.status(401).json({ error: 'User not authenticated' });
-    return;
-  }
-
-  const query = 'SELECT * FROM users WHERE id = ?';
-  pool.query(query, [userId], (err, result) => {
+  const query = 'SELECT id, firstName, lastName, email, phoneNumber, birthdate, age, gender, userImage FROM users WHERE id = ?';
+  
+  pool.getConnection((err, connection) => {
     if (err) {
       console.error(err);
-      res.status(500).json({ error: 'Internal server error' });
+      showError('Error connecting to database', res);
       return;
     }
 
-    if (result.length === 0) {
-      res.status(404).json({ error: 'User not found' });
-      return;
-    }
+    connection.query(query, [userId], (err, results) => {
+      connection.release();
 
-    const user = result[0];
-    res.json({
-      id: user.id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      // ... other user properties
+      if (err) {
+        console.error(err);
+        showError('Error retrieving user information', res);
+        return;
+      }
+
+      if (results.length === 0) {
+        res.status(404).json({ error: 'User not found' });
+        return;
+      }
+
+      const user = results[0];
+      res.json(user);
     });
   });
 });
-
 
 //update the userImage
 app.put('/api/users/:id/image', upload.single('userImage'), (req, res) => {
