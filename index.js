@@ -297,7 +297,7 @@ app.post("/api/generate-record", (req, res) => {
     totalPayment,
     travelers: formattedTravelers,
   };
-  const content = fs.readFileSync("template/template.docx", "binary");
+  const content = fs.readFileSync("https://hettrrms-server.onrender.com/template/template.docx", "binary");
   const zip = new PizZip(content);
   const doc = new Docxtemplater();
   doc.loadZip(zip);
