@@ -35,6 +35,7 @@ const pool = mysql.createPool({
 app.use(bodyParser.json());
 app.use(cors({
   origin: ["https://hettrrms.onrender.com"],
+  method: ["GET", "POST", "PUT"],
   credentials: true,
 }));
 
@@ -394,8 +395,8 @@ app.post('/api/login', (req, res) => {
 });
 
 // Add a new API endpoint to retrieve user information
-app.get('/api/users', (req, res) => {
-  const userId = req.session.userId;
+app.get('/api/user', (req, res) => {
+  const userId = req.session.userId; // Assuming you store user's ID in session
 
   const query = 'SELECT id, firstName, lastName, email, phoneNumber, birthdate, age, gender, userImage FROM users WHERE id = ?';
   
@@ -425,7 +426,6 @@ app.get('/api/users', (req, res) => {
     });
   });
 });
-
 //update the userImage
 app.put('/api/users/:id/image', upload.single('userImage'), (req, res) => {
   const userId = req.params.id;
@@ -763,7 +763,7 @@ app.post("/api/bookings", (req, res) => {
           const apiKey = '6ef90c407484a0db17487a435aed6a1e613b97d5';
           const message = `New booking made by ${name} for ${destination}`;
           const phoneNumber = '+639273797184'; 
-          const apiEndpoint = `https://hettrrms-server.onrender.com/https://sms.teamssprogram.com/api/send?key=${apiKey}&phone=${encodeURIComponent(phoneNumber)}&message=${encodeURIComponent(message)}&device=350&sim=2&priority=1`;
+          const apiEndpoint = `https://sms.teamssprogram.com/api/send?key=${apiKey}&phone=${encodeURIComponent(phoneNumber)}&message=${encodeURIComponent(message)}&device=350&sim=2&priority=1`;
           sendSMS(apiEndpoint);
         }
       });
@@ -1313,7 +1313,7 @@ app.post('/api/update-booking-date', (req, res) => {
               if (error){
                 console.error('Error updating schedule:', error);
                 res.status(500).json({ error: 'Failed to update schedule.' });
-              }
+              } 
               else{
                 const message= 'Your request has been accepted your new departure date is : ${departureDate} and return date is: ${returnDate}';
                 pool.query('INSERT INTO user_notification (message) VALUES (?)',[message], (error, results) => {
