@@ -390,7 +390,7 @@ app.post('/api/login', (req, res) => {
 
       connection.release();
 
-      res.json({ token, role: user.role, userId: user.id });
+      res.json({ token, role: user.role, userId: user.id, user: user });
     });
   });
 });
