@@ -395,12 +395,10 @@ app.post('/api/login', (req, res) => {
   });
 });
 
-// Add a new API endpoint to retrieve user information
 app.get('/api/user', (req, res) => {
-  const userId = req.session.userId; // Assuming you store user's ID in session
+  const userId = req.session.userId;
+  const query = 'SELECT * FROM users WHERE id = ?';
 
-  const query = 'SELECT id, firstName, lastName, email, phoneNumber, birthdate, age, gender, userImage FROM users WHERE id = ?';
-  
   pool.getConnection((err, connection) => {
     if (err) {
       console.error(err);
@@ -418,15 +416,28 @@ app.get('/api/user', (req, res) => {
       }
 
       if (results.length === 0) {
-        res.status(404).json({ error: 'User not found' });
+        showError('User not found', res);
         return;
       }
 
       const user = results[0];
-      res.json(user);
+
+      res.json({
+        ...user,
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+        birthdate: user.birthdate,
+        age: user.age,
+        gender: user.gender,
+        userImageUrl: `../uploads/${user.userImage}`,
+      });
     });
   });
 });
+
 //update the userImage
 app.put('/api/users/:id/image', upload.single('userImage'), (req, res) => {
   const userId = req.params.id;
