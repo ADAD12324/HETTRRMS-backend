@@ -432,7 +432,7 @@ app.get('/api/user', (req, res) => {
         birthdate: user.birthdate,
         age: user.age,
         gender: user.gender,
-        userImageUrl: `../uploads/${user.userImage}`,
+        userImageUrl: `https://hettrrms-server.onrender.com/uploads/${user.userImage}`,
       });
     });
   });
