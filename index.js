@@ -23,13 +23,13 @@ const app = express();
 
 // Create MySQL connection pool
 const pool = mysql.createPool({
-  connectionLimit: 100,
+  connectionLimit: 10,
   host: `db4free.net`,
-  port: 3306,
   user: `backend_server`,
   password:'password12345',
   database:'backenddb',
 });
+
 
 // Set up middleware
 app.use(bodyParser.json());
@@ -390,12 +390,12 @@ app.post('/api/login', (req, res) => {
 
       connection.release();
 
-      res.json({ token, role: user.role, userId: user.id, user: user });
+      res.json({ token, role: user.role, userId: user.id });
     });
   });
 });
 
-app.get('/login/user', (req, res) => {
+app.get('/api/user', (req, res) => {
   const userId = req.session.userId;
   const query = 'SELECT * FROM users WHERE id = ?';
 
