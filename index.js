@@ -4,7 +4,6 @@ const bodyParser = require('body-parser');
 const multer = require('multer');
 const path = require('path');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 process.env.JWT_SECRET = 'your-secret-key-here';
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
