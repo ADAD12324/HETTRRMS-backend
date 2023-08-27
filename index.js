@@ -4,7 +4,6 @@ const bodyParser = require('body-parser');
 const multer = require('multer');
 const path = require('path');
 const bcrypt = require('bcrypt');
-process.env.JWT_SECRET = 'your-secret-key-here';
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
@@ -343,14 +342,12 @@ app.get('/api/generated-files', (req, res) => {
 });
 
 
-
-
 // for login
 app.post('/api/login', (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
-  const query = 'SELECT id, username, password, role FROM users WHERE username = ?';
+  const query = 'SELECT id, username, password, role, firstName, lastName FROM users WHERE username = ?';
 
   pool.getConnection((err, connection) => {
     if (err) {
@@ -381,23 +378,17 @@ app.post('/api/login', (req, res) => {
         return;
       }
 
-    
-
       req.session.userId = user.id;
       req.session.username = user.username;
       req.session.role = user.role;
-      req.session.firstName = user.firstName;
-      req.session.lastName = user.lastName;
-      console.log("Stored username:", req.session.username);
-      console.log("Stored fname:", req.session.firstName);
-      console.log("Stored lname:", req.session.lastName);
+      req.session.firstName = user.firstName; // Add this line
+      req.session.lastName = user.lastName;   // Add this line
       connection.release();
 
       res.json({ role: user.role, userId: user.id, username: user.username });
     });
   });
 });
-
 app.get('/api/user', (req, res) => {
   const userId = req.session.userId;
   const query = 'SELECT * FROM users WHERE id = ?';
