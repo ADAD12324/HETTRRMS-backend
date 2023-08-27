@@ -381,52 +381,18 @@ app.post('/api/login', (req, res) => {
       req.session.userId = user.id;
       req.session.username = user.username;
       req.session.role = user.role;
-      req.session.firstName = user.firstName; // Add this line
-      req.session.lastName = user.lastName;   // Add this line
+      req.session.firstName = user.firstName;
+      req.session.lastName = user.lastName;
+      console.log("Stored username:", req.session.username);
+      console.log("Stored fname:", req.session.firstName);
+      console.log("Stored lname:", req.session.lastName);
       connection.release();
-
-      res.json({ role: user.role, userId: user.id, username: user.username });
-    });
-  });
-});
-app.get('/api/user', (req, res) => {
-  const userId = req.session.userId;
-  const query = 'SELECT * FROM users WHERE id = ?';
-
-  pool.getConnection((err, connection) => {
-    if (err) {
-      console.error(err);
-      showError('Error connecting to database', res);
-      return;
-    }
-
-    connection.query(query, [userId], (err, results) => {
-      connection.release();
-
-      if (err) {
-        console.error(err);
-        showError('Error retrieving user information', res);
-        return;
-      }
-
-      if (results.length === 0) {
-        showError('User not found', res);
-        return;
-      }
-
-      const user = results[0];
 
       res.json({
-        ...user,
-        id: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        phoneNumber: user.phoneNumber,
-        birthdate: user.birthdate,
-        age: user.age,
-        gender: user.gender,
-        userImageUrl: `https://hettrrms-server.onrender.com/uploads/${user.userImage}`,
+        role: user.role,
+        userId: user.id,
+        username: user.username,
+        firstName: user.firstName // Include firstName in the response
       });
     });
   });
