@@ -387,8 +387,11 @@ app.post('/api/login', (req, res) => {
       req.session.userId = user.id;
       req.session.username = user.username;
       req.session.role = user.role;
-
+      req.session.firstName = user.firstName;
+      req.session.lastName = user.lastName;
       console.log("Stored username:", req.session.username);
+      console.log("Stored fname:", req.session.firstName);
+      console.log("Stored lname:", req.session.lastName);
       connection.release();
 
       res.json({ role: user.role, userId: user.id, username: user.username });
