@@ -395,13 +395,26 @@ app.post('/api/login', (req, res) => {
   });
 });
 
-app.get('/api/user', (req, res) => {
+const authenticateAndAuthorize = (req, res, next) => {
   const userId = req.session.userId;
+  const userRole = req.session.role;
 
   // Check if the user is authenticated
-  if (!userId) {
+  if (!userId || !userRole) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
+
+  // Check if the user has the required role to access the endpoint
+  if (userRole !== 'user') {
+    return res.status(403).json({ error: 'Forbidden' });
+  }
+
+  next(); // Move to the next middleware or route handler
+};
+
+// Apply the middleware to the /api/user route
+app.get('/api/user', authenticateAndAuthorize, (req, res) => {
+  const userId = req.session.userId;
 
   const query = 'SELECT * FROM users WHERE id = ?';
 
