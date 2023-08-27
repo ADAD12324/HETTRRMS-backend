@@ -382,15 +382,16 @@ app.post('/api/login', (req, res) => {
         return;
       }
 
-      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
+    
 
       req.session.userId = user.id;
       req.session.username = user.username;
       req.session.role = user.role;
 
+      console.log("Stored username:", req.session.username);
       connection.release();
 
-      res.json({ token, role: user.role, userId: user.id });
+      res.json({ role: user.role, userId: user.id, username: user.username });
     });
   });
 });
