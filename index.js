@@ -398,7 +398,7 @@ app.post('/api/login', (req, res) => {
 });
 
 app.get('/api/user', (req, res) => {
-  const userId = req.session.userId;
+  const userId = req.params.userId;
   const query = 'SELECT * FROM users WHERE id = ?';
 
   pool.getConnection((err, connection) => {
