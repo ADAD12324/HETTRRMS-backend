@@ -397,13 +397,18 @@ app.post('/api/login', (req, res) => {
 
 app.get('/api/user', (req, res) => {
   const userId = req.session.userId;
+
+  // Check if the user is authenticated
+  if (!userId) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
   const query = 'SELECT * FROM users WHERE id = ?';
 
   pool.getConnection((err, connection) => {
     if (err) {
       console.error(err);
-      showError('Error connecting to database', res);
-      return;
+      return res.status(500).json({ error: 'Internal server error' });
     }
 
     connection.query(query, [userId], (err, results) => {
@@ -411,13 +416,11 @@ app.get('/api/user', (req, res) => {
 
       if (err) {
         console.error(err);
-        showError('Error retrieving user information', res);
-        return;
+        return res.status(500).json({ error: 'Internal server error' });
       }
 
       if (results.length === 0) {
-        showError('User not found', res);
-        return;
+        return res.status(404).json({ error: 'User not found' });
       }
 
       const user = results[0];
