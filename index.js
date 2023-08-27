@@ -395,33 +395,15 @@ app.post('/api/login', (req, res) => {
   });
 });
 
-const authenticateAndAuthorize = (req, res, next) => {
+app.get('/login/user', (req, res) => {
   const userId = req.session.userId;
-  const userRole = req.session.role;
-
-  // Check if the user is authenticated
-  if (!userId || !userRole) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
-
-  // Check if the user has the required role to access the endpoint
-  if (userRole !== 'user') {
-    return res.status(403).json({ error: 'Forbidden' });
-  }
-
-  next(); // Move to the next middleware or route handler
-};
-
-// Apply the middleware to the /api/user route
-app.get('/api/user', authenticateAndAuthorize, (req, res) => {
-  const userId = req.session.userId;
-
   const query = 'SELECT * FROM users WHERE id = ?';
 
   pool.getConnection((err, connection) => {
     if (err) {
       console.error(err);
-      return res.status(500).json({ error: 'Internal server error' });
+      showError('Error connecting to database', res);
+      return;
     }
 
     connection.query(query, [userId], (err, results) => {
@@ -429,11 +411,13 @@ app.get('/api/user', authenticateAndAuthorize, (req, res) => {
 
       if (err) {
         console.error(err);
-        return res.status(500).json({ error: 'Internal server error' });
+        showError('Error retrieving user information', res);
+        return;
       }
 
       if (results.length === 0) {
-        return res.status(404).json({ error: 'User not found' });
+        showError('User not found', res);
+        return;
       }
 
       const user = results[0];
