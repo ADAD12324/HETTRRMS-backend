@@ -392,7 +392,8 @@ app.post('/api/login', (req, res) => {
         role: user.role,
         userId: user.id,
         username: user.username,
-        firstName: user.firstName // Include firstName in the response
+        firstName: user.firstName ,
+        lastName:user.lastName
       });
     });
   });
