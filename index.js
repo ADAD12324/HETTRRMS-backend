@@ -384,9 +384,10 @@ app.post('/api/login', (req, res) => {
       req.session.firstName = user.firstName;
       req.session.lastName = user.lastName;
       req.session.email = user.email;
-      req.session.lastName = user.lastName;
-      req.session.lastName = user.lastName;
-      req.session.lastName = user.lastName;
+      req.session.phoneNumber = user.phoneNumber;
+      req.session.birthdate= user.birthdate;
+      req.session.age= user.age;
+      req.session.gender= user.gender;
 
       console.log("Stored username:", req.session.username);
       console.log("Stored fname:", req.session.firstName);
