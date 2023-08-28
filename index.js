@@ -383,6 +383,11 @@ app.post('/api/login', (req, res) => {
       req.session.role = user.role;
       req.session.firstName = user.firstName;
       req.session.lastName = user.lastName;
+      req.session.email = user.email;
+      req.session.lastName = user.lastName;
+      req.session.lastName = user.lastName;
+      req.session.lastName = user.lastName;
+
       console.log("Stored username:", req.session.username);
       console.log("Stored fname:", req.session.firstName);
       console.log("Stored lname:", req.session.lastName);
@@ -393,7 +398,13 @@ app.post('/api/login', (req, res) => {
         userId: user.id,
         username: user.username,
         firstName: user.firstName ,
-        lastName:user.lastName
+        lastName:user.lastName,
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+        birthdate: user.birthdate,
+        age: user.age,
+        gender: user.gender,
+        userImageUrl: `https://hettrrms-server.onrender.com/uploads/${user.userImage}`,
       });
     });
   });
