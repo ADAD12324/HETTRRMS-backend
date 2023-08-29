@@ -388,7 +388,7 @@ app.post('/api/login', (req, res) => {
       req.session.birthdate= user.birthdate;
       req.session.age= user.age;
       req.session.gender= user.gender;
-
+      req.session.userImage = `https://hettrrms-server.onrender.com/uploads/${user.userImage}`;
       console.log("Stored username:", req.session.username);
       console.log("Stored fname:", req.session.firstName);
       console.log("Stored lname:", req.session.lastName);
