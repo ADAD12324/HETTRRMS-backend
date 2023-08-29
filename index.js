@@ -405,7 +405,7 @@ app.post('/api/login', (req, res) => {
         birthdate: user.birthdate,
         age: user.age,
         gender: user.gender,
-        userImageUrl: `https://hettrrms-server.onrender.com/uploads/${user.userImage}`,
+        userImage: `https://hettrrms-server.onrender.com/uploads/${user.userImage}`,
       });
     });
   });
