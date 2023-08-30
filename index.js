@@ -430,30 +430,24 @@ app.put('/api/users/:id/image', upload.single('userImage'), (req, res) => {
     res.status(200).json({ success: true });
   });
 });
-//update user info
-app.put('/api/users/:id', (req, res) => {
-  const userId = req.params.id;
-  const { firstName, lastName, email, phoneNumber, birthdate, age, gender } = req.body;
+// Handle PUT request for updating user info
+app.put('/api/users/:id', async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const { firstName, lastName, email, phoneNumber, birthdate, age, gender } = req.body;
 
-  const updateUserQuery = 'UPDATE users SET firstName = ?, lastName = ?, email = ?, phoneNumber = ?, birthdate = ?, age = ?, gender = ? WHERE id = ?';
-  const updateUserValues = [firstName, lastName, email, phoneNumber, birthdate, age, gender, userId];
-
-  pool.getConnection((err, connection) => {
-    if (err) {
-      console.error(err);
-      res.status(500).json({ error: 'Error connecting to database' });
-      return;
-    }
+    const updateUserQuery = 'UPDATE users SET firstName = ?, lastName = ?, email = ?, phoneNumber = ?, birthdate = ?, age = ?, gender = ? WHERE id = ?';
+    const updateUserValues = [firstName, lastName, email, phoneNumber, birthdate, age, gender, userId];
 
     connection.query(updateUserQuery, updateUserValues, (err, result) => {
       connection.release();
-
+    
       if (err) {
         console.error(err);
         res.status(500).json({ error: 'Error updating user' });
         return;
       }
-
+    
       // Return the updated user information
       res.status(200).json({
         id: userId,
@@ -466,8 +460,13 @@ app.put('/api/users/:id', (req, res) => {
         gender: gender,
       });
     });
-  });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error updating user' });
+  }
 });
+
 //update user password
 app.put('/api/users/:id/password', (req, res) => {
   const userId = req.params.id;
