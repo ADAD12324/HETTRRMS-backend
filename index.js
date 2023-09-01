@@ -430,18 +430,27 @@ app.put('/api/users/:id/image', upload.single('userImage'), (req, res) => {
     res.status(200).json({ success: true });
   });
 });
+// Inside your /api/users/:id route
 app.put('/api/users/:id', async (req, res) => {
   try {
     const userId = req.params.id;
     const { firstName, lastName, email, phoneNumber, birthdate, age, gender } = req.body;
 
-    
+    // Create a new database connection
+    const connection = mysql.createConnection({
+      host: 'db4free.net',
+      user: 'backend_server',
+      password: 'password12345',
+      database: 'backenddb',
+    });
 
+    // Execute the update query
     const updateUserQuery = 'UPDATE users SET firstName = ?, lastName = ?, email = ?, phoneNumber = ?, birthdate = ?, age = ?, gender = ? WHERE id = ?';
     const updateUserValues = [firstName, lastName, email, phoneNumber, birthdate, age, gender, userId];
 
-    pool.query(updateUserQuery, updateUserValues, (err, result) => {
-      pool.end();
+    connection.query(updateUserQuery, updateUserValues, (err, result) => {
+      // Release the database connection
+      connection.release();
 
       if (err) {
         console.error(err);
