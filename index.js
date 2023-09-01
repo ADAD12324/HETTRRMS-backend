@@ -434,42 +434,31 @@ app.put('/api/users/:id/image', upload.single('userImage'), (req, res) => {
 app.put('/api/users/:id', async (req, res) => {
   try {
     const userId = req.params.id;
-    const { firstName, lastName, email, phoneNumber, birthdate, age, gender } = req.body;
+const { firstName, lastName, email, phoneNumber, birthdate, age, gender } = req.body;
 
-    // Create a new database connection
-    const connection = mysql.createConnection({
-      host: 'db4free.net',
-      user: 'backend_server',
-      password: 'password12345',
-      database: 'backenddb',
-    });
+// Execute the update query
+const updateUserQuery = 'UPDATE users SET firstName = ?, lastName = ?, email = ?, phoneNumber = ?, birthdate = ?, age = ?, gender = ? WHERE id = ?';
+const updateUserValues = [firstName, lastName, email, phoneNumber, birthdate, age, gender, userId];
 
-    // Execute the update query
-    const updateUserQuery = 'UPDATE users SET firstName = ?, lastName = ?, email = ?, phoneNumber = ?, birthdate = ?, age = ?, gender = ? WHERE id = ?';
-    const updateUserValues = [firstName, lastName, email, phoneNumber, birthdate, age, gender, userId];
+pool.query(updateUserQuery, updateUserValues, (err, result) => {
+  if (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Error updating user' });
+    return;
+  }
 
-    connection.query(updateUserQuery, updateUserValues, (err, result) => {
-      // Release the database connection
-      connection.release();
-
-      if (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Error updating user' });
-        return;
-      }
-
-      // Return the updated user information
-      res.status(200).json({
-        id: userId,
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        phoneNumber: phoneNumber,
-        birthdate: birthdate,
-        age: age,
-        gender: gender,
-      });
-    });
+  // Return the updated user information
+  res.status(200).json({
+    id: userId,
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    phoneNumber: phoneNumber,
+    birthdate: birthdate,
+    age: age,
+    gender: gender,
+  });
+});
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error updating user' });
