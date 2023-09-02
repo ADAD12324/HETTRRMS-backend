@@ -433,6 +433,7 @@ app.put('/api/users/:id/image', upload.single('userImage'), (req, res) => {
 // Inside your /api/users/:id route
 app.put('/api/users/:id', async (req, res) => {
   try {
+
     const userId = req.params.id;
 const { firstName, lastName, email, phoneNumber, birthdate, age, gender } = req.body;
 
@@ -459,10 +460,10 @@ pool.query(updateUserQuery, updateUserValues, (err, result) => {
     gender: gender,
   });
 });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Error updating user' });
-  }
+} catch (error) {
+  console.error(error);
+  res.status(500).json({ error: 'Error updating user' });
+}
 });
 
 
