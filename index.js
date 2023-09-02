@@ -433,38 +433,38 @@ app.put('/api/users/:id/image', upload.single('userImage'), (req, res) => {
 // Inside your /api/users/:id route
 app.put('/api/users/:id', async (req, res) => {
   try {
-
     const userId = req.params.id;
-const { firstName, lastName, email, phoneNumber, birthdate, age, gender } = req.body;
+    const { firstName, lastName, email, phoneNumber, birthdate, age, gender } = req.body;
 
-// Execute the update query
-const updateUserQuery = 'UPDATE users SET firstName = ?, lastName = ?, email = ?, phoneNumber = ?, birthdate = ?, age = ?, gender = ? WHERE id = ?';
-const updateUserValues = [firstName, lastName, email, phoneNumber, birthdate, age, gender, userId];
+    // Execute the update query
+    const updateUserQuery = 'UPDATE users SET firstName = ?, lastName = ?, email = ?, phoneNumber = ?, birthdate = ?, age = ?, gender = ? WHERE id = ?';
+    const updateUserValues = [firstName, lastName, email, phoneNumber, birthdate, age, gender, userId];
 
-pool.query(updateUserQuery, updateUserValues, (err, result) => {
-  if (err) {
-    console.error(err);
+    pool.query(updateUserQuery, updateUserValues, (err, result) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Error updating user' });
+        return;
+      }
+
+      // Return the updated user information
+      res.status(200).json({
+        id: userId,
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        phoneNumber: phoneNumber,
+        birthdate: birthdate,
+        age: age,
+        gender: gender,
+      });
+    });
+  } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Error updating user' });
-    return;
   }
+});
 
-  // Return the updated user information
-  res.status(200).json({
-    id: userId,
-    firstName: firstName,
-    lastName: lastName,
-    email: email,
-    phoneNumber: phoneNumber,
-    birthdate: birthdate,
-    age: age,
-    gender: gender,
-  });
-});
-} catch (error) {
-  console.error(error);
-  res.status(500).json({ error: 'Error updating user' });
-}
-});
 
 
 //update user password
