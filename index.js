@@ -413,7 +413,7 @@ app.post('/api/login', (req, res) => {
 
 //update the userImage
 app.put('/api/users/:id/image', upload.single('userImage'), (req, res) => {
-  const userId = req.params.id;
+  const userId = req.params.id; // Get the user ID from the URL
   const userImage = req.file.filename;
 
   // Update user image in the database
