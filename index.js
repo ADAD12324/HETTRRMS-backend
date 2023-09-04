@@ -54,7 +54,7 @@ app.use(express.static('public'));
 app.use(express.json());
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'https://hettrrms-server.onrender.com/uploads');
+    cb(null, './uploads');
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname));
@@ -62,7 +62,7 @@ const storage = multer.diskStorage({
 });
 const stored = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'https://hettrrms-server.onrender.com/records');
+    cb(null, './records');
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname));
@@ -70,7 +70,7 @@ const stored = multer.diskStorage({
 });
 const store = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'https://hettrrms-server.onrender.com/restores');
+    cb(null, './restores');
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname));
@@ -78,7 +78,7 @@ const store = multer.diskStorage({
 });
 const stor = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'https://hettrrms-server.onrender.com/backups');
+    cb(null, './backups');
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname));
