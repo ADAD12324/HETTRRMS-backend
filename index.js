@@ -84,16 +84,16 @@ const stor = multer.diskStorage({
     cb(null, Date.now() + path.extname(file.originalname));
   }
 });
-app.use('https://hettrrms-server.onrender.com/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 const upload = multer({ storage: storage });
 
-app.use('https://hettrrms-server.onrender.com/images', express.static(path.join(__dirname, 'images')));
-app.use('https://hettrrms-server.onrender.com/template', express.static(path.join(__dirname, 'template')));
-app.use('https://hettrrms-server.onrender.com/records', express.static(path.join(__dirname, 'records')));
+app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use('/template', express.static(path.join(__dirname, 'template')));
+app.use('/records', express.static(path.join(__dirname, 'records')));
 const record = multer({ storage: stored });
-app.use('https://hettrrms-server.onrender.com/restores', express.static(path.join(__dirname, 'restores')));
+app.use('/restores', express.static(path.join(__dirname, 'restores')));
 const restore = multer({ storage: store });
-app.use('https://hettrrms-server.onrender.com/backups', express.static(path.join(__dirname, 'backups')));
+app.use('/backups', express.static(path.join(__dirname, 'backups')));
 const backup = multer({ storage: stor });
 
 // Configure Nodemailer transporter
