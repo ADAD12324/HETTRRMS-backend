@@ -84,6 +84,14 @@ const stor = multer.diskStorage({
     cb(null, Date.now() + path.extname(file.originalname));
   }
 });
+const stock = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './profiles');
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname));
+  }
+});
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 const upload = multer({ storage: storage });
 
@@ -95,7 +103,8 @@ app.use('/restores', express.static(path.join(__dirname, 'restores')));
 const restore = multer({ storage: store });
 app.use('/backups', express.static(path.join(__dirname, 'backups')));
 const backup = multer({ storage: stor });
-
+app.use('/profiles', express.static(path.join(__dirname, 'profiles')));
+const profile = multer({ storage: stock });
 // Configure Nodemailer transporter
 const transporter = nodemailer.createTransport({
 host:'smtp.gmail.com',
