@@ -84,19 +84,10 @@ const stor = multer.diskStorage({
     cb(null, Date.now() + path.extname(file.originalname));
   }
 });
-const stock = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, './images');
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname));
-  }
-});
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 const upload = multer({ storage: storage });
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
-const image = multer({ storage: stock });
 app.use('/template', express.static(path.join(__dirname, 'template')));
 app.use('/records', express.static(path.join(__dirname, 'records')));
 const record = multer({ storage: stored });
@@ -206,7 +197,7 @@ function generateRandomPassword(length = 8) {
 }
 
 // Handle POST request
-app.post('/api/register', image.fields([
+app.post('/api/register', upload.fields([
   { name: 'idImage', maxCount: 1 },
   { name: 'userImage', maxCount: 1 }
 ]), (req, res) => {
@@ -397,7 +388,7 @@ app.post('/api/login', (req, res) => {
       req.session.birthdate= user.birthdate;
       req.session.age= user.age;
       req.session.gender= user.gender;
-      req.session.userImage = `https://hettrrms-server.onrender.com/images/${user.userImage}`;
+      req.session.userImage = `https://hettrrms-server.onrender.com/uploads/${user.userImage}`;
       console.log("Stored username:", req.session.username);
       console.log("Stored fname:", req.session.firstName);
       console.log("Stored lname:", req.session.lastName);
@@ -421,7 +412,7 @@ app.post('/api/login', (req, res) => {
 });
 
 //update the userImage
-app.put('/api/users/:id/image', image.single('userImage'), (req, res) => {
+app.put('/api/users/:id/image', upload.single('userImage'), (req, res) => {
   const userId = req.params.id;
   const userImage = req.file.filename;
 
