@@ -54,7 +54,7 @@ app.use(express.static('public'));
 app.use(express.json());
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, 'uploads')); // Use an absolute path to the "uploads" folder
+    cb(null, path.join(__dirname, 'uploads')); // Use an absolute path to 'uploads' folder
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname));
@@ -210,8 +210,9 @@ app.post('/api/register', upload.fields([
   const username = req.body.username;
   const password = req.body.password;
   const confirmPassword = req.body.confirmPassword;
-  const idImage = req.files.idImage[0].filename;
-  const userImage = req.files.userImage[0].filename;
+  const idImage = req.file.filename;
+const userImage = req.file.filename;
+
 
   // Check if passwords match
   if (password !== confirmPassword) {
