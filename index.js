@@ -54,12 +54,13 @@ app.use(express.static('public'));
 app.use(express.json());
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, 'uploads')); // Use an absolute path
+    cb(null, path.join(__dirname, 'uploads')); // Use an absolute path to the "uploads" folder
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname));
   }
 });
+const upload = multer({ storage: storage });
 const stored = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, './records');
@@ -85,8 +86,6 @@ const stor = multer.diskStorage({
   }
 });
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-const upload = multer({ storage: storage });
-
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/template', express.static(path.join(__dirname, 'template')));
 app.use('/records', express.static(path.join(__dirname, 'records')));
