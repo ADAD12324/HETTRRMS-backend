@@ -54,13 +54,12 @@ app.use(express.static('public'));
 app.use(express.json());
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, 'uploads')); // Use an absolute path to 'uploads' folder
+    cb(null, path.join(__dirname, 'uploads')); // Use an absolute path
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname));
   }
 });
-const upload = multer({ storage: storage });
 const stored = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, './records');
@@ -86,6 +85,8 @@ const stor = multer.diskStorage({
   }
 });
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+const upload = multer({ storage: storage });
+
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/template', express.static(path.join(__dirname, 'template')));
 app.use('/records', express.static(path.join(__dirname, 'records')));
@@ -210,9 +211,8 @@ app.post('/api/register', upload.fields([
   const username = req.body.username;
   const password = req.body.password;
   const confirmPassword = req.body.confirmPassword;
-  const idImage = req.file.filename;
-const userImage = req.file.filename;
-
+  const idImage = req.files.idImage[0].filename;
+  const userImage = req.files.userImage[0].filename;
 
   // Check if passwords match
   if (password !== confirmPassword) {
