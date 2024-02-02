@@ -22,20 +22,19 @@ const app = express();
 // Create MySQL connection pool
 const pool = mysql.createPool({
   connectionLimit: 10,
-  host: `db4free.net`,
-  user: `backend_server`,
-  password:'password12345',
-  database:'backenddb',
+  host: 'localhost',
+  user: 'root',
+  password: '',
+  database: 'backend',
 });
 
-
 // Set up middleware
+
 app.use(bodyParser.json());
 app.use(cors({
-  origin: 'https://hettrrms.onrender.com', // Replace with your frontend URL
-  methods: ['GET', 'POST', 'PUT'],
-  credentials: true,
-  // You can add more options here if needed
+  origin:["http://localhost:3000"],
+  method:["GET", "POST", "PUT"],
+  credentials:true
 }));
 
 app.use(cookieParser());
